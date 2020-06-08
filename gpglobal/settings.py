@@ -25,7 +25,7 @@ SECRET_KEY = '4-1p+nxvekzdra&4*^gg5(nn9q@e9+0b+#yhk0&a!3a99_st9_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['Gpglobal-env.eba-mpu6tyk3.ap-south-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['Gpglobal-env.eba-mpu6tyk3.ap-south-1.elasticbeanstalk.com','127.0.0.1']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'admintruck'
 ]
 
 MIDDLEWARE = [
