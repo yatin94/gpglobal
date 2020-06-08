@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import boto3
 
-dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1',aws_access_key_id="AKIAJAA22XMZKO2UKNLA",aws_secret_access_key="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")
+dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1',aws_access_key_id="AKIA5O3E5IOBPSOBNZXJ",aws_secret_access_key="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")
 
 def loginVerification(request,username,password):
     try:
