@@ -4,6 +4,8 @@ from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import boto3
 
 dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1',aws_access_key_id="AKIA5O3E5IOBPSOBNZXJ",aws_secret_access_key="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")
+trucks = ['truck1','truck2','truck3','truck4','truck5']
+trucksUser = ['truck1','truck2','truck3']
 
 def loginVerification(request,username,password):
     try:
@@ -25,6 +27,8 @@ def loginVerification(request,username,password):
 
 def login(request):
     if request.method == "GET":
+        if request.session.has_key("username"):
+            return redirect('/')
         return render(request,"login.html")
     if request.method == "POST":
         emailaddress = request.POST['email']
@@ -35,8 +39,34 @@ def login(request):
             return redirect('/login')
         if errMsg == "Admin":
             request.session['username'] = username
-            request.session.set_expiry(50)
+            request.session['GpGlobal'] = 'Admin'
+            request.session.set_expiry(500)
+            return redirect('/')
             # return redirect('../trucks')
-            return HttpResponse("inside")
-        messages.warning(request, 'Not yet decided')
-        return redirect('login')
+        elif errMsg == 'Customer':
+            request.session['username'] = username
+            request.session['GpGlobal'] = 'Customer'
+            request.session.set_expiry(500)
+            return redirect('/')
+        else:
+            messages.warning(request,"Cannot Login")
+            return redirect('/login')
+    
+def homePage(request):
+    if request.method == "GET":
+        if request.session.has_key("username"):
+            if request.session['GpGlobal'] == "Admin":
+                return render(request,"index.html",{"trucks":trucks})
+            else:
+                return render(request,"user.html",{"trucks":trucksUser})
+        else:
+            return redirect('/login')
+
+def logout(request):
+    try:
+        del request.session['username']
+        messages.warning(request,"Logged Out")
+        return redirect('/login')
+    except Exception as e:
+        messages.warning(request,str(e))
+        return redirect('/login')
