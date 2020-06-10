@@ -29,15 +29,18 @@ def login(request):
     if request.method == "GET":
         if request.session.has_key("username"):
             return redirect('/')
-        client = boto3.client('dynamodb',region_name = 'ap-south-1')
-        response = client.get_item(TableName='gpglobal', Key={
-            'username':{
-                "S":"admin@admin",
-            },
-            'password':{
-                "S":"admin",
-            },
-        })
+        # client = boto3.client('dynamodb',region_name = 'ap-south-1')
+        # response = client.get_item(TableName='gpglobal', Key={
+        #     'username':{
+        #         "S":"admin@admin",
+        #     },
+        #     'password':{
+        #         "S":"admin",
+        #     },
+        # })
+        dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1')
+        table = dynamodb.Table('gpglobal')
+        response = table.get_item(Key={'username':'admin@admin','password':'admin'})
         return render(request,"login.html",{'response':response})
     if request.method == "POST":
         emailaddress = request.POST['email']
