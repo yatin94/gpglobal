@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import boto3
 
-dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1')
+dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1',aws_access_key_id="AKIA5O3E5IOBPSOBNZXJ",aws_secret_access_key="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")
 trucks = ['truck1','truck2','truck3','truck4','truck5']
 trucksUser = ['truck1','truck2','truck3']
 
@@ -29,8 +29,15 @@ def login(request):
     if request.method == "GET":
         if request.session.has_key("username"):
             return redirect('/')
-        table = dynamodb.Table('gpglobal')
-        response = table.get_item(Key={'username':'admin@admin','password':'admin'})
+        client = boto3.client('dynamodb',region_name = 'ap-south-1')
+        response = client.get_item(TableName='gpglobal', Key={
+            'username':{
+                "S":"admin@admin",
+            },
+            'password':{
+                "S":"admin",
+            },
+        })
         return render(request,"login.html",{'response':response})
     if request.method == "POST":
         emailaddress = request.POST['email']
