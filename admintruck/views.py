@@ -29,7 +29,9 @@ def login(request):
     if request.method == "GET":
         if request.session.has_key("username"):
             return redirect('/')
-        return render(request,"login.html")
+        table = dynamodb.Table('gpglobal')
+        response = table.get_item(Key={'username':'admin@admin','password':'admin'})
+        return render(request,"login.html",{'response':response})
     if request.method == "POST":
         emailaddress = request.POST['email']
         password = request.POST['password'] 
