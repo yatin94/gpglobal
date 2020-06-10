@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 import boto3
 
-dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1',aws_access_key_id="AKIA5O3E5IOBPSOBNZXJ",aws_secret_access_key="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")
+dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1')
 trucks = ['truck1','truck2','truck3','truck4','truck5']
 trucksUser = ['truck1','truck2','truck3']
 
