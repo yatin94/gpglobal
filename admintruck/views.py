@@ -6,6 +6,11 @@ import boto3
 dynamodb = boto3.resource('dynamodb',region_name = 'ap-south-1')
 trucks = ['truck1','truck2','truck3','truck4','truck5']
 trucksUser = ['truck1','truck2','truck3']
+truckspecific = {"truck1":{"source":"Mumbai","destination":"Goa","number":"TR45po"},
+                "truck2":{"source":"Goa","destination":"Karnataka","number":"TR21sw"},
+                "truck3":{"source":"Karnataka","destination":"Kerla","number":"TR31s2"},
+                "truck4":{"source":"Kerla","destination":"Tamil Nadu","number":"TR41Af"},
+                "truck5":{"source":"Tamil Nadu","destination":"Andhra Pradesh","number":"TR51fe"},}
 
 def loginVerification(request,username,password):
     try:
@@ -70,6 +75,20 @@ def homePage(request):
                 return render(request,"user.html",{"trucks":trucksUser})
         else:
             return redirect('/login')
+
+def truckInfo(request):
+    try:
+        if request.method == "GET" and request.session.has_key("username") and request.session['GpGlobal']=="Admin":
+            return render(request,"truckInfo.html",{"trucks":trucks})
+        return redirect('/login')
+
+    except Exception as e:
+        print(e)
+        return redirect('/login')
+
+def truckinfoDetails(request,truckname):
+    if request.method == "GET" and request.session.has_key("username") and request.session['GpGlobal']=="Admin":
+        return JsonResponse({'data':truckspecific[truckname]})
 
 def logout(request):
     try:
